@@ -4,10 +4,12 @@
 
 <div class="row my-3">
     <div class="col">
-        <h1 class="text-center py-5 display-1">IMDB DB</h1>
-
         <h2>Categories</h2>
-        dd($categories);
+        
+        {{-- @php
+            dd($categories);
+        @endphp --}}
+
         @foreach($categories as $categorie)
         <div class="row mb-3">
             <div class="col-9">

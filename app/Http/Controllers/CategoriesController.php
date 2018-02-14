@@ -25,7 +25,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -36,7 +36,10 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create( $request->except('_token') 
+        + [ 'user_id' => '1' ] 
+    );
+        return redirect()->action('CategoriesController@index');
     }
 
     /**
