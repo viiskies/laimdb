@@ -12,6 +12,7 @@
                     <li>
                         <h4>{{ $category->name }}</h4>
                         <p>{{ $category->description }}</p>
+                        <p>Created by: {{ $category->user->name }}</p>
                     </li>
                 </ul>
             </div>                

@@ -8,11 +8,12 @@
                 <ul>
                     @foreach($movies as $movie)
                     <li>
-                        <p>{{ $movie->name }}</p>
+                        <h2>{{ $movie->name }}</h2>
                         <p>Category: {{ $movie->category->name }}</p>
                         <p>Description: {{ $movie->description }}</p>
                         <p>Year: {{ $movie->year }}</p>
                         <p>Rating: {{ $movie->rating }}</p>
+                        <p>Created by: {{ $movie->user->name }}</p>
                     </li>
                     @endforeach
                 </ul>

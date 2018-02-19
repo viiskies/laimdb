@@ -13,4 +13,8 @@ class Category extends Model
     public function movies() {
         return $this->hasMany(Movie::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

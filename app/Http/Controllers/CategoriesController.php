@@ -37,8 +37,8 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        // $user_id = Auth::user()->id;
-        $category = Category::create( $request->except('_token') + [ 'user_id' => 5 ] );
+        $user_id = Auth::user()->id;
+        $category = Category::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         // $category = Category::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         return redirect()->action('CategoriesController@index');
     }
