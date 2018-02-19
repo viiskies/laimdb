@@ -73,7 +73,10 @@ class MoviesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $movie = Movie::findOrFail( $id );
+        $categories = Category::orderBy('name', 'asc')->get();
+        $actors = Actor::orderBy('name', 'asc')->get();
+        return view('movies.edit', ['movie' => $movie, 'categories' => $categories, 'actors' => $actors]);
     }
 
     /**
@@ -85,7 +88,12 @@ class MoviesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $movie = Movie::findOrFail( $id )->update(
+            ['year' => $request->get('year')]
+            // more to add
+        );
+        $movie = Movie::findOrFail( $id );
+        return view('movies.single', ['movie' => $movie]);
     }
 
     /**

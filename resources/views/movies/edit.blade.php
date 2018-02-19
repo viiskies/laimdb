@@ -2,15 +2,15 @@
 
 @section('content')
 <div class="col-xl-6">
-    <form method="post" action="{{ route('movies.store') }}">
+    <form method="post" action="{{ route('movies.update', [ 'movie' => $movie->id ]) }}">
         @csrf
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ old('name') }}">
+            <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $movie->name }}">
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea type="text" name="description" class="form-control" id="description" placeholder="Category description...">{{ old('description') }}</textarea>
+            <textarea type="text" name="description" class="form-control" id="description" placeholder="Category description...">{{ $movie->description }}</textarea>
         </div>
         <div class="form-group">
             <label for="category">Category</label>
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             <label for="actors">Actors</label>
-            <select multiple="multiple" class="custom-select" name="actor_id[]" id="actors">
+            <select multiple="multiple" class="custom-select" name="actor_id[]" id="actors">                
                 @foreach ($actors as $actor)
                     <option value="{{ $actor->id }}">{{ $actor->name }}</option>
                 @endforeach
@@ -31,11 +31,11 @@
         </div>
         <div class="form-group">
             <label for="year">Year</label>
-            <input type="text" name="year" class="form-control" id="year" placeholder="Year" value="{{ old('year') }}">
+            <input type="text" name="year" class="form-control" id="year" placeholder="Year" value="{{ $movie->year }}">
         </div>
         <div class="form-group">
             <label for="rating">Rating</label>
-            <input type="text" name="rating" class="form-control" id="rating" placeholder="Rating" value="{{ old('rating') }}">
+            <input type="text" name="rating" class="form-control" id="rating" placeholder="Rating" value="{{ $movie->rating }}">
         </div>
         
         

@@ -69,7 +69,8 @@ class ActorsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $actor = Actor::findOrFail( $id );
+        return view('actors.edit', ['actor' => $actor]);
     }
 
     /**
