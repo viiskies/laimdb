@@ -48,9 +48,12 @@ class CategoriesController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        $category = Category::findOrFail( $id );
+        return view('categories.single',  
+            [ 'category' => $category ] 
+        );
     }
 
     /**

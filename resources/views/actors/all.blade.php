@@ -9,7 +9,11 @@
                 <ul>
                     @foreach($actors as $actor)
                     <li>
-                        <h4>{{ $actor->name }}</h4>
+                        <h4>
+                            <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                                {{ $actor->name }}
+                            </a>
+                        </h4>
                         <p>{{ $actor->birthday }} - {{ $actor->deathday }}</p>
                         Movies:
                         <ul>

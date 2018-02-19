@@ -10,7 +10,11 @@
             <div class="col-9">
                 <ul>
                     <li>
-                        <h4>{{ $category->name }}</h4>
+                        <h4>
+                            <a href="{{ route('categories.show', ['category_id' => $category->id]) }}">
+                                {{ $category->name }}
+                            </a>
+                        </h4>
                         <p>{{ $category->description }}</p>
                         <p>Created by: {{ $category->user->name }}</p>
                     </li>

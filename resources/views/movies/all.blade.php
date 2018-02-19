@@ -9,18 +9,29 @@
                 <ul>
                     @foreach($movies as $movie)
                     <li>
-                        <h2>{{ $movie->name }}</h2>
-                        <p>Category: {{ $movie->category->name }}</p>
+                        <h2>
+                            <a href="{{ route('movies.show', ['id' => $movie->id]) }}">
+                            {{ $movie->name }}
+                            </a>
+                        </h2>
+                        <p>Category: 
+                            <a href="{{ route('categories.show', ['id' => $movie->category->id]) }}">
+                            {{ $movie->category->name }}
+                            </a>
+                        </p>
                         <p>Description: {{ $movie->description }}</p>
                         <p>Year: {{ $movie->year }}</p>
                         <p>Rating: {{ $movie->rating }}</p>
                         Actors:
                         <ul>
                             @foreach($movie->actors as $actor)
-                                <li>{{ $actor->name }}</li>
+                                <li>
+                                    <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                                    {{ $actor->name }}
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
-                        {{--  <p>Created by: {{ $movie->user->name }}</p>  --}}
                     </li>
                     @endforeach
                 </ul>
