@@ -15,10 +15,10 @@
                         <p>Year: {{ $movie->year }}</p>
                         <p>Rating: {{ $movie->rating }}</p>
                         Actors:
-                            <ul>
-                        @foreach($movie->actors as $actor)
-                            <li>{{ $actor->name }}</li>
-                        @endforeach
+                        <ul>
+                            @foreach($movie->actors as $actor)
+                                <li>{{ $actor->name }}</li>
+                            @endforeach
                         </ul>
                         {{--  <p>Created by: {{ $movie->user->name }}</p>  --}}
                     </li>

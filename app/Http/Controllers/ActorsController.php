@@ -43,9 +43,9 @@ class ActorsController extends Controller
         $user_id = Auth::user()->id;
         $actor = Actor::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         
-        $starred_in_movies = $request->movie_id;
-        $actor->movies()->attach($starred_in_movies);
-        // dd($request->except('_token'));
+        $movies_attached = $request->movie_id;
+        $actor->movies()->attach($movies_attached);
+
         return redirect()->action('ActorsController@index');
     }
 

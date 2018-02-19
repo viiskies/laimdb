@@ -11,6 +11,12 @@
                     <li>
                         <h4>{{ $actor->name }}</h4>
                         <p>{{ $actor->birthday }} - {{ $actor->deathday }}</p>
+                        Movies:
+                        <ul>
+                            @foreach($actor->movies as $movie)
+                            <li>{{ $movie->name }}</li> 
+                            @endforeach
+                        </ul>
                     </li>
                     @endforeach
                 </ul>

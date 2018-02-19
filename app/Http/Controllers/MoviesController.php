@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Category;
 use App\Movie;
+use App\Actor;
 
 
 class MoviesController extends Controller
@@ -29,7 +30,8 @@ class MoviesController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name', 'asc')->get();
-        return view('movies.create', [ 'categories' => $categories ] );
+        $actors = Actor::orderBy('name', 'asc')->get();
+        return view('movies.create', [ 'categories' => $categories, 'actors' => $actors ] );
     }
 
     /**
@@ -41,8 +43,11 @@ class MoviesController extends Controller
     public function store(Request $request)
     {
         $user_id = Auth::user()->id;
-        // dd($request->except('_token'));
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
+
+        $actors_attached = $request->actor_id;
+        $movie->actors()->attach($actors_attached);
+
         return redirect()->action('MoviesController@index');
     }
 
