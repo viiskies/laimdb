@@ -14,10 +14,13 @@
                         <p>Description: {{ $movie->description }}</p>
                         <p>Year: {{ $movie->year }}</p>
                         <p>Rating: {{ $movie->rating }}</p>
-                        <p>Created by: {{ $movie->user->name }}</p>
+                        Actors:
+                            <ul>
                         @foreach($movie->actors as $actor)
-                            <p>{{ $actor->name }}</p>
+                            <li>{{ $actor->name }}</li>
                         @endforeach
+                        </ul>
+                        {{--  <p>Created by: {{ $movie->user->name }}</p>  --}}
                     </li>
                     @endforeach
                 </ul>
