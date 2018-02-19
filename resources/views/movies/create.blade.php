@@ -41,6 +41,7 @@
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>
             @endforeach 
         @endif
+        
         @if ($errors->get('category')) 
             @foreach ($errors->get('category') as $error)
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>

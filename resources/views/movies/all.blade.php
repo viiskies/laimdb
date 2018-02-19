@@ -1,4 +1,5 @@
 @extends('layouts.app') 
+
 @section('content')
 <div class="row my-3">
     <div class="col">
@@ -14,6 +15,9 @@
                         <p>Year: {{ $movie->year }}</p>
                         <p>Rating: {{ $movie->rating }}</p>
                         <p>Created by: {{ $movie->user->name }}</p>
+                        @foreach($movie->actors as $actor)
+                            <p>{{ $actor->name }}</p>
+                        @endforeach
                     </li>
                     @endforeach
                 </ul>

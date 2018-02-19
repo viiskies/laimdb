@@ -40,9 +40,9 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
-        // $user_id = Auth::user()->id;
+        $user_id = Auth::user()->id;
         // dd($request->except('_token'));
-        $movie = Movie::create( $request->except('_token') + [ 'user_id' => 5 ] );
+        $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         return redirect()->action('MoviesController@index');
     }
 
@@ -90,4 +90,11 @@ class MoviesController extends Controller
     {
         //
     }
+
+    // public function save($request)
+    // {
+    //     $file = $request->file('photo');
+    //     $path = $file->storePublicly('public/photos');
+    //     $filename = basename($path);
+    // }
 }

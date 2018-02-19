@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
 
-use App\Category;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+use Illuminate\Support\Facades\Auth;
+use App\Movie;
+use App\Actor;
+
+class ActorsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +17,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('name', 'asc')->get();
-        return view('categories.all', ['categories' => $categories]);
+        $actors = Actor::orderBy('name', 'asc')->get();
+        return view('actors.all', ['actors' => $actors]);
     }
 
     /**
@@ -26,7 +28,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        $movies = Movie::orderBy('name', 'asc')->get();
+        return view('actors.create', [ 'movies' => $movies ] );
     }
 
     /**
@@ -38,17 +41,20 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $user_id = Auth::user()->id;
-        $category = Category::create( $request->except('_token') + [ 'user_id' => $user_id ] );
-        return redirect()->action('CategoriesController@index');
+        $actor = Actor::create( $request->except('_token') + [ 'user_id' => $user_id ] );
+        
+        $starred_in_movies = $request->movie_id;
+        dd($request->except('_token'));
+        return redirect()->action('ActorsController@index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
         //
     }
@@ -56,10 +62,10 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
         //
     }
@@ -68,10 +74,10 @@ class CategoriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -79,10 +85,10 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
         //
     }
