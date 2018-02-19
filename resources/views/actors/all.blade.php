@@ -1,24 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="row my-3">
     <div class="col">
-        <h2>Categories</h2>
-        @foreach($categories as $category)
+        <h2>Actors</h2>
         <div class="row mb-3">
             <div class="col-9">
                 <ul>
+                    @foreach($actors as $actor)
                     <li>
-                        <h4>{{ $category->name }}</h4>
-                        <p>{{ $category->description }}</p>
-                        <p>Created by: {{ $category->user->name }}</p>
+                        <h4>{{ $actor->name }}</h4>
+                        <p>{{ $actor->birthday }} - {{ $actor->deathday }}</p>
                     </li>
+                    @endforeach
                 </ul>
             </div>                
         </div>
-        @endforeach
     </div>
-    
 @endsection
+
 </div>
