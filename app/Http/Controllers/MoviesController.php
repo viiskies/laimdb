@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Category;
@@ -45,13 +46,12 @@ class MoviesController extends Controller
     {
         $user_id = Auth::user()->id;
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
+
         $file = $request->file('photo');
-        // dd($file);
-        $path = $file->store('public/photos');
-        // $path = $file->storePublicly('public/photos');
+        $path = $file->storePublicly('public/photos');
         $filename = basename($path);
-        $image = Image::create(['filename' => $filename, 'user_id' => $user_id, 'imagable_id' => $movie->id, 'imagable_type' => 'movie']);
-        dd($filename);
+
+        $movie->images()->create(['filename' => $filename, 'user_id' => $user_id]);
 
         $actors_attached = $request->actor_id;
         $movie->actors()->attach($actors_attached);
@@ -112,6 +112,13 @@ class MoviesController extends Controller
      */
     public function destroy($id)
     {
+        // $movie = Movie::findOrFail( $id );
+        $movieImages = Movie::findOrFail( $id )->images;
+        foreach ($movieImages as $image) {
+            $fullFileName = 'public/photos/' . $image->filename; 
+            Storage::delete($fullFileName);
+            $image->delete($image->id);
+        }
         $deletedMovie = Movie::destroy( $id );
         $movies = Movie::orderBy('name', 'asc')->get();
         return view('movies.all', ['movies' => $movies]);

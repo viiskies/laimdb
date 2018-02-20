@@ -19,7 +19,7 @@
                         <p>Created by: {{ $category->user->name }}</p>
                     </li>
                 </ul>
-            </div>                
+            </div>
         </div>
         @endforeach
     </div>

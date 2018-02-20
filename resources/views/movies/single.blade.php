@@ -3,9 +3,13 @@
 @section('content')
 <div class="row my-3">
     <div class="col">
-        <h2>{{ $movie->name }}</h2>
-        <h3>{{ $movie->year }}</h3>
+        <h2>{{ $movie->name }} ({{ $movie->year }})</h2>
         <h4>{{ $movie->rating }}</h4>
+
+        @foreach ($movie->images as $image)
+            <img src="{{URL::to('/storage/photos/')}}/{{ $image->filename }}">
+        @endforeach
+
         <blockquote class="blockquote">
             <p class="mb-0">{{ $movie->description }}</p>
             <footer class="blockquote-footer">{{ $movie->user->name }}</footer>
@@ -15,11 +19,9 @@
                 <h4>All {{ $movie->name }} actors</h4>
                 <ul>
                     @foreach ($movie->actors as $actor)
-                    <li>
-                        <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                    <li><a href="{{ route('actors.show', ['id' => $actor->id]) }}">
                         {{ $actor->name }}
-                        </a>
-                    </li>
+                    </a></li>
                     @endforeach
                 </ul>
             </div>

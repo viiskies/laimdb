@@ -12,7 +12,7 @@
                         {{--  <img src="">  --}}
                         <h2>
                             <a href="{{ route('movies.show', ['id' => $movie->id]) }}">
-                            {{ $movie->name }}
+                                {{ $movie->name }} ({{ $movie->year }})
                             </a>
                         </h2>
                         <p>Category: 
@@ -21,7 +21,6 @@
                             </a>
                         </p>
                         <p>Description: {{ $movie->description }}</p>
-                        <p>Year: {{ $movie->year }}</p>
                         <p>Rating: {{ $movie->rating }}</p>
                         Actors:
                         <ul>
