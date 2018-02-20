@@ -112,7 +112,6 @@ class MoviesController extends Controller
      */
     public function destroy($id)
     {
-        // $movie = Movie::findOrFail( $id );
         $movieImages = Movie::findOrFail( $id )->images;
         foreach ($movieImages as $image) {
             $fullFileName = 'public/photos/' . $image->filename; 
