@@ -75,9 +75,13 @@ class CategoriesController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $category = Category::findOrFail( $id )->update(
+            ['name' => $request->get('name'), 'description' => $request->get('description')]
+        );
+        $category = Category::findOrFail( $id );
+        return view('categories.single', ['category' => $category]);
     }
 
     /**

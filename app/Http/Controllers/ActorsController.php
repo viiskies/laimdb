@@ -69,8 +69,9 @@ class ActorsController extends Controller
      */
     public function edit($id)
     {
+        $movies = Movie::orderBy('name', 'asc')->get();
         $actor = Actor::findOrFail( $id );
-        return view('actors.edit', ['actor' => $actor]);
+        return view('actors.edit', ['actor' => $actor, 'movies' => $movies]);
     }
 
     /**
@@ -82,7 +83,11 @@ class ActorsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $actor = Actor::findOrFail( $id )->update(
+            ['name' => $request->get('name'), 'birthday' => $request->get('birthday'), 'deathday' => $request->get('deathday')]
+        );
+        $actor = Actor::findOrFail( $id );
+        return view('actors.single', ['actor' => $actor]);
     }
 
     /**
