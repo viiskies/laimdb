@@ -9,6 +9,7 @@
                 <ul>
                     @foreach($movies as $movie)
                     <li>
+                        {{--  <img src="">  --}}
                         <h2>
                             <a href="{{ route('movies.show', ['id' => $movie->id]) }}">
                             {{ $movie->name }}

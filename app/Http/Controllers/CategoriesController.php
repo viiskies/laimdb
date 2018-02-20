@@ -51,9 +51,7 @@ class CategoriesController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail( $id );
-        return view('categories.single',  
-            [ 'category' => $category ] 
-        );
+        return view('categories.single', [ 'category' => $category ]);
     }
 
     /**
