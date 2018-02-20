@@ -92,6 +92,8 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $deletedCategory = Category::destroy( $id );
+        $categories = Category::orderBy('name', 'asc')->get();
+        return view('categories.all', ['categories' => $categories]);
     }
 }

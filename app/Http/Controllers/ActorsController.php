@@ -98,6 +98,8 @@ class ActorsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deletedActor = Actor::destroy( $id );
+        $actors = Actor::orderBy('name', 'asc')->get();
+        return view('actors.all', ['actors' => $actors]);
     }
 }
