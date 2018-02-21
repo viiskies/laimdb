@@ -48,7 +48,7 @@ class MoviesController extends Controller
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
 
         $file = $request->file('photo');
-        $path = $file->storePublicly('public/photos');
+        $path = $file->storePublicly('public/photos/movies');
         $filename = basename($path);
 
         $movie->images()->create(['filename' => $filename, 'user_id' => $user_id]);
@@ -68,9 +68,7 @@ class MoviesController extends Controller
     public function show($id)
     {
         $movie = Movie::findOrFail( $id );
-        return view('movies.single',  
-            [ 'movie' => $movie ] 
-        );
+        return view('movies.single', [ 'movie' => $movie ]);
     }
 
     /**
@@ -114,10 +112,11 @@ class MoviesController extends Controller
     {
         $movieImages = Movie::findOrFail( $id )->images;
         foreach ($movieImages as $image) {
-            $fullFileName = 'public/photos/' . $image->filename; 
+            $fullFileName = 'public/photos/movies/' . $image->filename; 
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
+        
         $deletedMovie = Movie::destroy( $id );
         $movies = Movie::orderBy('name', 'asc')->get();
         return view('movies.all', ['movies' => $movies]);

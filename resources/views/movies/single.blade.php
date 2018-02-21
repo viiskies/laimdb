@@ -7,7 +7,7 @@
         <h4>{{ $movie->rating }}</h4>
 
         @foreach ($movie->images as $image)
-            <img src="{{URL::to('/storage/photos/')}}/{{ $image->filename }}">
+            <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-fluid w-25">
         @endforeach
 
         <blockquote class="blockquote">
@@ -19,9 +19,11 @@
                 <h4>All {{ $movie->name }} actors</h4>
                 <ul>
                     @foreach ($movie->actors as $actor)
-                    <li><a href="{{ route('actors.show', ['id' => $actor->id]) }}">
-                        {{ $actor->name }}
-                    </a></li>
+                    <li>
+                        <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                            {{ $actor->name }}
+                        </a>
+                    </li>
                     @endforeach
                 </ul>
             </div>

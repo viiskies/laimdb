@@ -9,7 +9,6 @@
             <label for="name">Name</label>
             <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $actor->name }}">
         </div>
-        
         @if ($errors->get('name'))
             @foreach ($errors->get('name') as $error)
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>
@@ -30,7 +29,6 @@
             <label for="deathday">Date of death</label>
             <input type="date" name="deathday" class="form-control" id="deathday" value="{{ $actor->deathday }}"></input>                                    
         </div>
-        
         @if ($errors->get('deathday')) 
             @foreach ($errors->get('deathday') as $error)
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>

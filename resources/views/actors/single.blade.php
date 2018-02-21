@@ -4,6 +4,11 @@
 <div class="row my-3">
     <div class="col">
         <h2>{{ $actor->name }}</h2>
+
+        @foreach ($actor->images as $image)
+            <img src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}">
+        @endforeach
+
         <blockquote class="blockquote">
             <p class="mb-0">{{ $actor->birthday }} - {{ $actor->deathday }}</p>
             <footer class="blockquote-footer">{{ $actor->user->name }}</footer>
