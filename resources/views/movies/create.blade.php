@@ -4,7 +4,7 @@
 <div class="col-xl-6">
     <form method="post" action="{{ route('movies.store') }}" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="photo" id="photo">
+        <input type="file" name="photo[]" id="photo" multiple>
 
         <div class="form-group">
             <label for="name">Name</label>
@@ -17,19 +17,19 @@
         <div class="form-group">
             <label for="category">Category</label> 
             <div class="form-radio">
-            @foreach ($categories as $category)            
-                <input class="form-radio-input" name="category_id" type="radio" value="{{ $category->id }}" id="{{ $category->name }}">
-                <label class="form-radio-label" for="{{ $category->name }}">{{ $category->name }}</label><br />
-            @endforeach
+                @foreach ($categories as $category)            
+                    <input class="form-radio-input" name="category_id" type="radio" value="{{ $category->id }}" id="{{ $category->name }}">
+                    <label class="form-radio-label" for="{{ $category->name }}">{{ $category->name }}</label><br />
+                @endforeach
             </div>
         </div>
         <div class="form-group">
             <label for="category">Actors</label> 
             <div class="form-check">
-            @foreach ($actors as $actor)
-                <input class="form-check-input" name="actor_id[]" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}"> 
-                <label class="form-check-label" for="{{ $actor->name }}">{{ $actor->name }}</label><br />
-            @endforeach
+                @foreach ($actors as $actor)
+                    <input class="form-check-input" name="actor_id[]" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}"> 
+                    <label class="form-check-label" for="{{ $actor->name }}">{{ $actor->name }}</label><br />
+                @endforeach
             </div>
         </div>
         <div class="form-group">
@@ -43,27 +43,27 @@
         
         
         @if ($errors->get('name')) 
-        @foreach ($errors->get('name') as $error)
-        <div class="alert alert-danger" role="alert">{{ $error }}</div>
-        @endforeach 
+            @foreach ($errors->get('name') as $error)
+                <div class="alert alert-danger" role="alert">{{ $error }}</div>
+            @endforeach 
         @endif
 
         @if ($errors->get('description'))
-        @foreach ($errors->get('description') as $error)
-        <div class="alert alert-danger" role="alert">{{ $error }}</div>
-        @endforeach 
+            @foreach ($errors->get('description') as $error)
+                <div class="alert alert-danger" role="alert">{{ $error }}</div>
+            @endforeach 
         @endif
         
         @if ($errors->get('category')) 
-        @foreach ($errors->get('category') as $error)
-        <div class="alert alert-danger" role="alert">{{ $error }}</div>
-        @endforeach 
+            @foreach ($errors->get('category') as $error)
+                <div class="alert alert-danger" role="alert">{{ $error }}</div>
+            @endforeach 
         @endif
         
         @if ($errors->get('year')) 
-        @foreach ($errors->get('year') as $error)
-        <div class="alert alert-danger" role="alert">{{ $error }}</div>
-        @endforeach 
+            @foreach ($errors->get('year') as $error)
+                <div class="alert alert-danger" role="alert">{{ $error }}</div>
+            @endforeach 
         @endif
         
         <button type="submit" class="btn btn-secondary">Submit</button>

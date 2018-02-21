@@ -41,7 +41,6 @@ class ActorsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $user_id = Auth::user()->id;
         $actor = Actor::create( $request->except('_token') + [ 'user_id' => $user_id ] );
 
@@ -108,13 +107,15 @@ class ActorsController extends Controller
      */
     public function destroy($id)
     {
-        $actorImages = Actor::findOrFail( $id )->images;
+        $actorToDelete = Actor::findOrFail( $id );
+        
+        $actorImages = $actorToDelete->images;
         foreach ($actorImages as $image) {
             $fullFileName = 'public/photos/actors/' . $image->filename; 
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
-        Actor::findOrFail($id)->movies()->detach();
+        $actorToDelete->movies()->detach();
         $deletedActor = Actor::destroy( $id );
         $actors = Actor::orderBy('name', 'asc')->get();
         return view('actors.all', ['actors' => $actors]);

@@ -4,9 +4,14 @@
 <div class="col-xl-6">
     <form method="post" action="{{ route('movies.update', [ 'movie' => $movie->id ]) }}">
         @csrf
-        @foreach ($movie->images as $image)
-            <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-thumbnail w-25"> 
-        @endforeach
+        <div class="form-group">
+            <div class="form-check">
+                @foreach ($movie->images as $image)
+                    <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-thumbnail w-25">
+                    <input class="form-check-input" name="photo_id[]" type="checkbox" value="{{ $image->filename }}" id="{{ $image->filename }}">         
+                @endforeach
+            </div>
+        </div>
 
         <div class="form-group">
             <label for="name">Name</label>

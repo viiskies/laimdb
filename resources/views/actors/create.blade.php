@@ -5,7 +5,7 @@
     <form method="post" action="{{ route('actors.store') }}" enctype="multipart/form-data">
         
         @csrf
-        <input type="file" name="photo" id="photo">
+        <input type="file" name="photo" id="photo" multiple>
 
         <div class="form-group">
             <label for="name">Name</label>
