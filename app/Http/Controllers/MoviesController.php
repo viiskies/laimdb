@@ -23,6 +23,27 @@ class MoviesController extends Controller
         $movies = Movie::orderBy('name', 'asc')->get();
         return view('movies.all', ['movies' => $movies]);
     }
+
+    public function api(Request $request)
+    {
+        $movie = Movie::findOrFail( 1 );
+        $url = "http://www.omdbapi.com/?apikey=cbeafd6a&s=love&y=2016";
+        $json = json_decode(file_get_contents($url), true);
+        foreach($json['Search'] as $movie) {
+            // echo $movie['Title'];
+            $file = file_get_contents($movie['Poster']);
+            
+            Storage::disk('local')->put('public/photos/movies/fun1.jpg', $file);
+            dd('done');
+            $path = $file->storePublicly('public/photos/movies');
+            $filename = basename($path);
+            $movie->images()->create(['filename' => $filename, 'user_id' => 1]);
+            // dd($file);
+        };
+        // dd('heel');
+        $movies = Movie::orderBy('name', 'asc')->get();
+        return view('movies.all', ['movies' => $movies]);
+    }
     
     /**
     * Show the form for creating a new resource.
@@ -48,6 +69,7 @@ class MoviesController extends Controller
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         
         foreach ($request->file('photo') as $file) {
+            // dd($file);
             $path = $file->storePublicly('public/photos/movies');
             $filename = basename($path);
             $movie->images()->create(['filename' => $filename, 'user_id' => $user_id]);
@@ -146,13 +168,13 @@ class MoviesController extends Controller
         $deletedMovie = Movie::destroy( $id );
         return redirect()->action('MoviesController@index');
     }
-
+    
     public function upvote($id) {
         $movie = Movie::findOrFail($id);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
         return redirect()->action('MoviesController@index');
     }
-
+    
     public function downvote($id) {
         $movie = Movie::findOrFail($id);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating - 1]);
