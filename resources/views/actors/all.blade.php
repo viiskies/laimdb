@@ -7,7 +7,9 @@
             @foreach($actors as $actor)
             <div class="card">
                 @foreach ($actor->images as $image)
-                    <img src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}" class="img-fluid card-img-top"> 
+                    @if($image->featured)
+                        <img src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}" class="img-fluid card-img-top">
+                    @endif 
                 @endforeach
                 <div class="card-body">
                     <h5 class="card-title">
