@@ -44,7 +44,7 @@ class MoviesController extends Controller
     */
     public function store(Request $request)
     {
-       
+        
         // dd($request->file('photo'));
         $user_id = Auth::user()->id;
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
@@ -95,9 +95,6 @@ class MoviesController extends Controller
     */
     public function update(Request $request, $id)
     {
-        // dd($request->get('photo_id'));
-        // image update
-
         $movieImages = Movie::findOrFail( $id )->images;
         foreach ($movieImages as $image) {
             if (in_array($image->filename, $request->get('photo_id'))) {
@@ -137,18 +134,10 @@ class MoviesController extends Controller
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
-
+        
         $movieToDelete->actors()->detach();
         $deletedMovie = Movie::destroy( $id );
         $movies = Movie::orderBy('name', 'asc')->get();
         return view('movies.all', ['movies' => $movies]);
     }
-    
-    // public function save($request)
-    // {
-        //     $file = $request->file('photo');
-        //     $path = $file->storePublicly('public/photos');
-        //     $filename = basename($path);
-        // }
-    }
-    
+}
