@@ -1,32 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row my-3">
+<div class="row">
     <div class="col">
-        <h2>Actors</h2>
-        <div class="row mb-3">
-            <div class="col-9">
-                <ul>
-                    @foreach($actors as $actor)
-                    <li>
-                        <h4>
-                            <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
-                                {{ $actor->name }}
-                            </a>
-                        </h4>
-                        <p>{{ $actor->birthday }} - {{ $actor->deathday }}</p>
-                        Movies:
-                        <ul>
-                            @foreach($actor->movies as $movie)
-                            <li>{{ $movie->name }}</li> 
-                            @endforeach
-                        </ul>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>                
+        <div class="card-columns">
+            @foreach($actors as $actor)
+            <div class="card">
+                @foreach ($actor->images as $image)
+                    <img src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}" class="img-fluid card-img-top"> 
+                @endforeach
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                            {{ $actor->name }}
+                        </a>
+                    </h5>
+                    <p class="card-text">
+                        {{ $actor->birthday }} - {{ $actor->deathday }}
+                    </p>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
-@endsection
-
 </div>
+@endsection    

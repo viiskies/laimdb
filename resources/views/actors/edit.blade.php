@@ -2,9 +2,18 @@
 
 @section('content')
 <div class="col-xl-6">
-    <form method="post" action="{{ route('actors.update', [ 'actor' => $actor->id ]) }}">
+    <form method="post" action="{{ route('actors.update', [ 'actor' => $actor->id ]) }}" enctype="multipart/form-data">
         
         @csrf
+        <input type="file" name="photo[]" id="photo" multiple>
+        <div class="form-group">
+            <div class="form-check">
+                @foreach ($actor->images as $image)
+                    <img src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}" class="img-thumbnail w-25">
+                    <input class="form-check-input" name="photo_id[]" type="checkbox" value="{{ $image->filename }}" id="{{ $image->filename }}">
+                @endforeach
+            </div>
+        </div>
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $actor->name }}">

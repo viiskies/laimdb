@@ -90,13 +90,35 @@ class ActorsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $actor = Actor::findOrFail( $id )->update(
-            ['name' => $request->get('name'), 'birthday' => $request->get('birthday'), 'deathday' => $request->get('deathday')]
-        );
         $actor = Actor::findOrFail( $id );
+        $user_id = Auth::user()->id;
+        if (!empty($request->get('photo_id'))) {
+            $actorImages = $actor->images;
+            foreach ($actorImages as $image) {
+                if (in_array($image->filename, $request->get('photo_id'))) {
+                    $fullFileName = 'public/photos/actors/' . $image->filename; 
+                    Storage::delete($fullFileName);
+                    $image->delete($image->id);
+                }
+            }
+        }
+        
+        if (!empty($request->file('photo'))) {
+            foreach ($request->file('photo') as $file) {
+                $path = $file->storePublicly('public/photos/actors');
+                $filename = basename($path);
+                $actor->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+            }
+        }
+        Actor::findOrFail( $id )->update(
+            ['name' => $request->get('name'), 
+            'birthday' => $request->get('birthday'), 
+            'deathday' => $request->get('deathday')]
+        );
+
         $movies_attached = $request->movie_id;
         $actor->movies()->sync($movies_attached);
-        return view('actors.single', ['actor' => $actor]);
+        return redirect()->action('ActorsController@show', ['id' => $id]);
     }
 
     /**
@@ -118,6 +140,6 @@ class ActorsController extends Controller
         $actorToDelete->movies()->detach();
         $deletedActor = Actor::destroy( $id );
         $actors = Actor::orderBy('name', 'asc')->get();
-        return view('actors.all', ['actors' => $actors]);
+        return redirect()->action('ActorsController@index');
     }
 }
