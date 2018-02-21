@@ -10,7 +10,10 @@
         @endforeach
 
         <blockquote class="blockquote">
-            <p class="mb-0">{{ $actor->birthday }} - {{ $actor->deathday }}</p>
+            @php
+                // dd($actor->deathday)
+            @endphp
+            <p class="mb-0">{{ $actor->birthday }} - {{ $actor->deathday != null ? $actor->deathday : "now" }}</p>
             <footer class="blockquote-footer">{{ $actor->user->name }}</footer>
         </blockquote>
         <div class="row mb-3">

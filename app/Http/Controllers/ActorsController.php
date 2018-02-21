@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Auth;
 use App\Movie;
@@ -94,6 +95,8 @@ class ActorsController extends Controller
             ['name' => $request->get('name'), 'birthday' => $request->get('birthday'), 'deathday' => $request->get('deathday')]
         );
         $actor = Actor::findOrFail( $id );
+        $movies_attached = $request->movie_id;
+        $actor->movies()->sync($movies_attached);
         return view('actors.single', ['actor' => $actor]);
     }
 
@@ -111,6 +114,7 @@ class ActorsController extends Controller
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
+        Actor::findOrFail($id)->movies()->detach();
         $deletedActor = Actor::destroy( $id );
         $actors = Actor::orderBy('name', 'asc')->get();
         return view('actors.all', ['actors' => $actors]);

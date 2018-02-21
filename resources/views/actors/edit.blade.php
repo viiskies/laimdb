@@ -36,13 +36,17 @@
         @endif
         
         <div class="form-group">
-            <label for="movies">Movies</label>
-            <select multiple="multiple" class="custom-select" name="movie_id[]" id="movie">
-                {{--  <option selected>Choose...</option>  --}}
-                @foreach ($movies as $movie)
-                    <option value="{{ $movie->id }}">{{ $movie->name }}</option>
-                @endforeach
-            </select>
+            <label for="category">Movies</label> 
+            @foreach ($movies as $movie)
+            <div class="form-check">
+                @if ($actor->movies->contains($movie))
+                    <input class="form-check-input" name="movie_id[]" type="checkbox" value="{{ $movie->id }}" id="{{ $movie->name }}" checked>       
+                @else
+                    <input class="form-check-input" name="movie_id[]" type="checkbox" value="{{ $movie->id }}" id="{{ $movie->name }}">       
+                @endif
+                <label class="form-check-label" for="{{ $movie->name }}">{{ $movie->name }}</label>
+            </div>
+            @endforeach
         </div>
         
         <button type="submit" class="btn btn-secondary">Submit</button>

@@ -15,20 +15,22 @@
             <textarea type="text" name="description" class="form-control" id="description" placeholder="Category description...">{{ old('description') }}</textarea>
         </div>
         <div class="form-group">
-            <label for="category">Category</label>
-            <select class="custom-select" name="category_id" id="category">
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
+            <label for="category">Category</label> 
+            <div class="form-radio">
+            @foreach ($categories as $category)            
+                <input class="form-radio-input" name="category_id" type="radio" value="{{ $category->id }}" id="{{ $category->name }}">
+                <label class="form-radio-label" for="{{ $category->name }}">{{ $category->name }}</label><br />
+            @endforeach
+            </div>
         </div>
         <div class="form-group">
-            <label for="actors">Actors</label>
-            <select multiple="multiple" class="custom-select" name="actor_id[]" id="actors">
-                @foreach ($actors as $actor)
-                    <option value="{{ $actor->id }}">{{ $actor->name }}</option>
-                @endforeach
-            </select>
+            <label for="category">Actors</label> 
+            <div class="form-check">
+            @foreach ($actors as $actor)
+                <input class="form-check-input" name="actor_id[]" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}"> 
+                <label class="form-check-label" for="{{ $actor->name }}">{{ $actor->name }}</label><br />
+            @endforeach
+            </div>
         </div>
         <div class="form-group">
             <label for="year">Year</label>
