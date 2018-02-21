@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="col-xl-6">
-    <form method="post" action="{{ route('actors.store') }}">
+    <form method="post" action="{{ route('actors.store') }}" enctype="multipart/form-data">
         
         @csrf
         <input type="file" name="photo" id="photo">

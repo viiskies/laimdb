@@ -5,7 +5,7 @@
     <form method="post" action="{{ route('movies.store') }}" enctype="multipart/form-data">
         @csrf
         <input type="file" name="photo" id="photo">
-        {{--  <input type="submit" value="Upload Image" name="submit">  --}}
+
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ old('name') }}">
@@ -17,7 +17,6 @@
         <div class="form-group">
             <label for="category">Category</label>
             <select class="custom-select" name="category_id" id="category">
-                {{--  <option>Choose...</option>  --}}
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach

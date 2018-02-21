@@ -40,14 +40,16 @@ class ActorsController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $user_id = Auth::user()->id;
         $actor = Actor::create( $request->except('_token') + [ 'user_id' => $user_id ] );
 
         $file = $request->file('photo');
-        $path = $file->storePublicly('public/photos/actors');
+        $path = $file->storePublicly('public/photos/actors/');
         $filename = basename($path);
 
-        $movie->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+        $actor->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+
         $movies_attached = $request->movie_id;
         $actor->movies()->attach($movies_attached);
 

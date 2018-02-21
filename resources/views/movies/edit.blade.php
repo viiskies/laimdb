@@ -22,11 +22,10 @@
             <label for="category">Category</label>
             @foreach ($categories as $category)
                 <div class="form-radio">
-                    {{--  @if (in_array($category, $movie->categories->all()))  --}}
                     @if ($category == $movie->category)
-                        <input class="form-radio-input" type="radio" value="{{ $category->id }}" id="{{ $category->name }}" checked>
+                        <input class="form-radio-input" name="category_id" type="radio" value="{{ $category->id }}" id="{{ $category->name }}" checked>
                     @else
-                        <input class="form-radio-input" type="radio" value="{{ $category->id }}" id="{{ $category->name }}">
+                        <input class="form-radio-input" name="category_id" type="radio" value="{{ $category->id }}" id="{{ $category->name }}">
                     @endif 
                     <label class="form-radio-label" for="{{ $category->name }}">{{ $category->name }}</label>
                 </div>
@@ -37,14 +36,10 @@
             <label for="category">Actors</label> 
             @foreach ($actors as $actor)
                 <div class="form-check">
-                    @php
-                        // dump($actor);
-                        // dd($movie->actors->all());
-                    @endphp
-                    @if (in_array($actor, $movie->actors->all()))
-                        <input class="form-check-input" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}" checked>
+                    @if ($movie->actors->contains($actor))
+                        <input class="form-check-input" name="actor_id[]" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}" checked>
                     @else
-                        <input class="form-check-input" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}">
+                        <input class="form-check-input" name="actor_id[]" type="checkbox" value="{{ $actor->id }}" id="{{ $actor->name }}">
                     @endif
                     <label class="form-check-label" for="{{ $actor->name }}">{{ $actor->name }}</label>
                 </div>

@@ -44,6 +44,7 @@ class MoviesController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $user_id = Auth::user()->id;
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
 
@@ -94,11 +95,21 @@ class MoviesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request);
+        // image update
+        
         $movie = Movie::findOrFail( $id )->update(
-            ['year' => $request->get('year')]
-            // more to add
+            ['name' => $request->get('name'), 
+            'category_id' => $request->get('category_id'), 
+            'description' => $request->get('description'), 
+            'year' => $request->get('year'),
+            'rating' => $request->get('rating')]
         );
         $movie = Movie::findOrFail( $id );
+
+        $actors_attached = $request->actor_id;
+        $movie->actors()->sync($actors_attached);
+
         return view('movies.single', ['movie' => $movie]);
     }
 
