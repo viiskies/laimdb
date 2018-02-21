@@ -44,8 +44,6 @@ class MoviesController extends Controller
     */
     public function store(Request $request)
     {
-        
-        // dd($request->file('photo'));
         $user_id = Auth::user()->id;
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         
@@ -126,9 +124,7 @@ class MoviesController extends Controller
         
         $actors_attached = $request->actor_id;
         $movie->actors()->sync($actors_attached);
-        $movie = Movie::findOrFail( $id );
-        
-        return view('movies.single', ['movie' => $movie]);
+        return redirect()->action('MoviesController@show', ['id' => $id]);
     }
     
     /**
@@ -146,10 +142,20 @@ class MoviesController extends Controller
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
-        
         $movieToDelete->actors()->detach();
         $deletedMovie = Movie::destroy( $id );
-        $movies = Movie::orderBy('name', 'asc')->get();
-        return view('movies.all', ['movies' => $movies]);
+        return redirect()->action('MoviesController@index');
+    }
+
+    public function upvote($id) {
+        $movie = Movie::findOrFail($id);
+        Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
+        return redirect()->action('MoviesController@index');
+    }
+
+    public function downvote($id) {
+        $movie = Movie::findOrFail($id);
+        Movie::findOrFail( $id )->update(['rating' => $movie->rating - 1]);
+        return redirect()->action('MoviesController@index');
     }
 }

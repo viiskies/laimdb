@@ -21,9 +21,13 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-center align-items-center">
-                            <span class="badge badge-pill badge-success">UP</span>
+                            <a href="{{ route('movies.upvote', ['id' => $movie->id]) }}">
+                                <span class="badge badge-pill badge-success">UP</span>
+                            </a>
                             <h3 class="mx-2">{{$movie->rating}}</h3>
-                            <span class="badge badge-pill badge-primary">DOWN</span>
+                            <a href="{{ route('movies.downvote', ['id' => $movie->id]) }}">
+                                <span class="badge badge-pill badge-primary">DOWN</span>
+                            </a>
                         </li>
                     </ul>
                 </div>

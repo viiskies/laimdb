@@ -39,6 +39,8 @@ Route::get('/category/{id}', 'CategoriesController@show')->name('categories.show
 
 Route::get('/movies', 'MoviesController@index')->name('movies.all');    
 Route::get('/movie/{id}', 'MoviesController@show')->name('movies.show');
+Route::get('/movie/upvote/{id}', 'MoviesController@upvote')->name('movies.upvote');
+Route::get('/movie/downvote/{id}', 'MoviesController@downvote')->name('movies.downvote');
 
 Route::get('/actors', 'ActorsController@index')->name('actors.all');
 Route::get('/actor/{id}', 'ActorsController@show')->name('actors.show');
