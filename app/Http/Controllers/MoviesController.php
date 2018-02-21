@@ -95,26 +95,38 @@ class MoviesController extends Controller
     */
     public function update(Request $request, $id)
     {
-        $movieImages = Movie::findOrFail( $id )->images;
-        foreach ($movieImages as $image) {
-            if (in_array($image->filename, $request->get('photo_id'))) {
-                $fullFileName = 'public/photos/movies/' . $image->filename; 
-                Storage::delete($fullFileName);
-                $image->delete($image->id);
+        $movie = Movie::findOrFail( $id );
+        $user_id = Auth::user()->id;
+        if (!empty($request->get('photo_id'))) {
+            $movieImages = $movie->images;
+            foreach ($movieImages as $image) {
+                if (in_array($image->filename, $request->get('photo_id'))) {
+                    $fullFileName = 'public/photos/movies/' . $image->filename; 
+                    Storage::delete($fullFileName);
+                    $image->delete($image->id);
+                }
             }
         }
         
-        $movie = Movie::findOrFail( $id )->update(
+        if (!empty($request->file('photo'))) {
+            foreach ($request->file('photo') as $file) {
+                $path = $file->storePublicly('public/photos/movies');
+                $filename = basename($path);
+                $movie->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+            }
+        }
+        
+        Movie::findOrFail( $id )->update(
             ['name' => $request->get('name'), 
             'category_id' => $request->get('category_id'), 
             'description' => $request->get('description'), 
             'year' => $request->get('year'),
             'rating' => $request->get('rating')]
         );
-        $movie = Movie::findOrFail( $id );
         
         $actors_attached = $request->actor_id;
         $movie->actors()->sync($actors_attached);
+        $movie = Movie::findOrFail( $id );
         
         return view('movies.single', ['movie' => $movie]);
     }

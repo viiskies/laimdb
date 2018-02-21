@@ -2,8 +2,9 @@
 
 @section('content')
 <div class="col-xl-6">
-    <form method="post" action="{{ route('movies.update', [ 'movie' => $movie->id ]) }}">
+    <form method="post" action="{{ route('movies.update', [ 'movie' => $movie->id ]) }}" enctype="multipart/form-data">
         @csrf
+        <input type="file" name="photo[]" id="photo" multiple>
         <div class="form-group">
             <div class="form-check">
                 @foreach ($movie->images as $image)
