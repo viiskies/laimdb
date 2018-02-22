@@ -107,7 +107,7 @@ class ActorsController extends Controller
             foreach ($request->file('photo') as $file) {
                 $path = $file->storePublicly('public/photos/actors');
                 $filename = basename($path);
-                $actor->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+                $actor->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => 1]);
             }
         }
         Actor::findOrFail( $id )->update(

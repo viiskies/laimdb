@@ -127,12 +127,21 @@ class MoviesController extends Controller
                 }
             }
         }
-        
+        // dd($request->featured);
+        if (!empty($request->featured)) {
+            $movieImages = $movie->images;
+            foreach ($movieImages as $image) {
+                $image->update(['featured' => 0]);
+            }
+            $image = Image::findOrFail( $request->featured );
+            $image->update(['featured' => 1]);
+         }
+
         if (!empty($request->file('photo'))) {
             foreach ($request->file('photo') as $file) {
                 $path = $file->storePublicly('public/photos/movies');
                 $filename = basename($path);
-                $movie->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+                $movie->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => 0]);
             }
         }
         
