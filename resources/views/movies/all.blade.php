@@ -4,6 +4,7 @@
 <div class="row">
     <div class="col">
         <div class="card-columns">
+            @for($i=0; $i<3; $i++)
             @foreach($movies as $movie)
             <div class="card">
                 @foreach ($movie->images as $image)
@@ -31,9 +32,20 @@
                             <span class="badge badge-pill badge-primary">DOWN</span>
                         </a>
                     </li>
+                    @if($movie->actors->count() > 0)
+                    <li class="list-group-item text-center">
+                            <p><h3>Actors</h3></p>
+                            @foreach ($movie->actors as $actor)
+                            <p>
+                                {{ $actor->name }}
+                            </p>
+                            @endforeach
+                    </li>   
+                    @endif
                 </ul>
             </div>
             @endforeach
+            @endfor
         </div>
     </div>
 @endsection

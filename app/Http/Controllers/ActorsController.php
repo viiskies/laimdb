@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Movie;
 use App\Actor;
+use App\Image;
+
 
 class ActorsController extends Controller
 {
@@ -48,7 +50,8 @@ class ActorsController extends Controller
         $path = $file->storePublicly('public/photos/actors/');
         $filename = basename($path);
 
-        $actor->images()->create(['filename' => $filename, 'user_id' => $user_id]);
+
+        $actor->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => 0]);
 
         $movies_attached = $request->movie_id;
         $actor->movies()->attach($movies_attached);
@@ -102,6 +105,15 @@ class ActorsController extends Controller
                 }
             }
         }
+                
+        if (!empty($request->featured)) {
+            $actorImages = $actor->images;
+            foreach ($actorImages as $image) {
+                $image->update(['featured' => 0]);
+            }
+            $image = Image::findOrFail( $request->featured );
+            $image->update(['featured' => 1]);
+         }
         
         if (!empty($request->file('photo'))) {
             foreach ($request->file('photo') as $file) {

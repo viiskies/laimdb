@@ -18,7 +18,7 @@
                         </a>
                     </h5>
                     <p class="card-text">
-                        {{ $actor->birthday }} - {{ $actor->deathday }}
+                        {{ $actor->birthday }} - {{ $actor->deathday != null ? $actor->deathday : "now" }}
                     </p>
                 </div>
             </div>
