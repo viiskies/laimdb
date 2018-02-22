@@ -23,7 +23,7 @@
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-center align-items-center">
+                    <li class="list-group-item d-flex justify-content-center align-items-center">                 
                         <a href="{{ route('movies.upvote', ['id' => $movie->id]) }}">
                             <span class="badge badge-pill badge-success">UP</span>
                         </a>
@@ -36,8 +36,10 @@
                     <li class="list-group-item text-center">
                             <p><h3>Actors</h3></p>
                             @foreach ($movie->actors as $actor)
-                            <p>
-                                {{ $actor->name }}
+                            <p class="mb-0">
+                                <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                                    {{ $actor->name }}
+                                </a>
                             </p>
                             @endforeach
                     </li>   

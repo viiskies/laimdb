@@ -41,7 +41,6 @@
             <input type="text" name="rating" class="form-control" id="rating" placeholder="Rating" value="{{ old('rating') }}">
         </div>
         
-        
         @if ($errors->get('name')) 
             @foreach ($errors->get('name') as $error)
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>
