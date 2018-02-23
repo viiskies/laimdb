@@ -8,7 +8,7 @@
         <div class="form-group">
             <div class="form-check">
                 @foreach ($movie->images as $image)
-                    <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-thumbnail w-25">
+                    <img src="{{ URL::to('/storage/photos/movies') }}/{{ $image->filename }}" class="img-thumbnail w-25">
                     <input class="form-check-input" name="photo_id[]" type="checkbox" value="{{ $image->filename }}" id="{{ $image->filename }}">         
                 @endforeach
             </div>
@@ -17,7 +17,7 @@
         <div class="form-group">
             <div class="form-radio">
                 @foreach ($movie->images as $image)
-                    <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-thumbnail w-25">
+                    <img src="{{ URL::to('/storage/photos/movies') }}/{{ $image->filename }}" class="img-thumbnail w-25">
                     <input class="form-radio-input" name="featured" type="radio" value="{{ $image->id }}" id="{{ $image->filename }}">         
                 @endforeach
             </div>

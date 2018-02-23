@@ -13,6 +13,8 @@ use App\Image;
 
 class MoviesController extends Controller
 {
+
+
     /**
     * Display a listing of the resource.
     *
@@ -23,7 +25,7 @@ class MoviesController extends Controller
         $movies = Movie::orderBy('name', 'asc')->get();
         return view('movies.all', ['movies' => $movies]);
     }
-
+    
     public function api(Request $request)
     {
         $movie = Movie::findOrFail( 1 );
@@ -38,9 +40,7 @@ class MoviesController extends Controller
             $path = $file->storePublicly('public/photos/movies');
             $filename = basename($path);
             $movie->images()->create(['filename' => $filename, 'user_id' => 1]);
-            // dd($file);
         };
-        // dd('heel');
         $movies = Movie::orderBy('name', 'asc')->get();
         return view('movies.all', ['movies' => $movies]);
     }
@@ -50,8 +50,11 @@ class MoviesController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function create()
+    public function create(Request $request)
     {
+        if (Auth::check()) {
+            $request->user()->authorizeRoles('user');
+        }
         $categories = Category::orderBy('name', 'asc')->get();
         $actors = Actor::orderBy('name', 'asc')->get();
         return view('movies.create', [ 'categories' => $categories, 'actors' => $actors ] );
@@ -65,6 +68,9 @@ class MoviesController extends Controller
     */
     public function store(Request $request)
     {
+        if (Auth::check()) {
+            $request->user()->authorizeRoles('user');
+        }
         $user_id = Auth::user()->id;
         $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
         
@@ -99,8 +105,11 @@ class MoviesController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
+        if (Auth::check()) {
+            $request->user()->authorizeRoles('user');
+        }
         $movie = Movie::findOrFail( $id );
         $categories = Category::orderBy('name', 'asc')->get();
         $actors = Actor::orderBy('name', 'asc')->get();
@@ -116,6 +125,9 @@ class MoviesController extends Controller
     */
     public function update(Request $request, $id)
     {
+        if (Auth::check()) {
+            $request->user()->authorizeRoles('user');
+        }
         $movie = Movie::findOrFail( $id );
         $user_id = Auth::user()->id;
         if (!empty($request->get('photo_id'))) {
@@ -128,7 +140,7 @@ class MoviesController extends Controller
                 }
             }
         }
-
+        
         if (!empty($request->featured)) {
             $movieImages = $movie->images;
             foreach ($movieImages as $image) {
@@ -136,8 +148,8 @@ class MoviesController extends Controller
             }
             $image = Image::findOrFail( $request->featured );
             $image->update(['featured' => 1]);
-         }
-
+        }
+        
         if (!empty($request->file('photo'))) {
             foreach ($request->file('photo') as $file) {
                 $path = $file->storePublicly('public/photos/movies');
@@ -165,8 +177,11 @@ class MoviesController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        if (Auth::check()) {
+            $request->user()->authorizeRoles('user');
+        }
         $movieToDelete = Movie::findOrFail( $id );
         $movieImages = $movieToDelete->images;
         foreach ($movieImages as $image) {

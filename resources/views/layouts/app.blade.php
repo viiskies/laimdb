@@ -30,6 +30,18 @@
                         <li><a class="nav-link" href="{{ route('movies.all') }}">Movies</a></li>
                         <li><a class="nav-link" href="{{ route('actors.all') }}">Actors</a></li>
                         <li><a class="nav-link" href="{{ route('categories.all') }}">Categories</a></li>
+                        @if (Auth::check())
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Create
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('categories.create') }}">Category</a>
+                                <a class="dropdown-item" href="{{ route('movies.create') }}">Movie</a>
+                                <a class="dropdown-item" href="{{ route('actors.create') }}">Actor</a>
+                            </div>
+                        </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->

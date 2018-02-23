@@ -2,28 +2,40 @@
 
 @section('content')
 <div class="row my-3">
-    <div class="col">
+    <div class="col ">
         <h2>{{ $actor->name }}</h2>
-
-        @foreach ($actor->images as $image)
-            <img src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}">
-        @endforeach
-
-        <blockquote class="blockquote">
-            @php
-                // dd($actor->deathday)
-            @endphp
-            <p class="mb-0">{{ $actor->birthday }} - {{ $actor->deathday != null ? $actor->deathday : "now" }}</p>
-            <footer class="blockquote-footer">{{ $actor->user->name }}</footer>
-        </blockquote>
-        <div class="row mb-3">
-            <div class="col-9">
-                <h4>All {{ $actor->name }} movies</h4>
+        <div class="card-columns">
+            @foreach ($actor->images as $image)
+                @if($image->featured)
+                    <div class="card">
+                        <img class="card-img card-img-top" src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}">
+                        <div class="card-body">
+                            <p class="card-text">
+                                {{ $actor->birthday }} - {{ $actor->deathday != null ? $actor->deathday : "now" }}
+                            </p>
+                            @if (Auth::check() && Auth::user()->role == 'admin')
+                                <p class="card-text">
+                                    <a href="{{ route('actors.edit', ['id' => $actor->id]) }}">Edit</a>
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+            @foreach ($actor->images as $image)
+                @if(!$image->featured)
+                    <div class="card">
+                        <img class="card-img img-fluid card-img-top" src="{{URL::to('/storage/photos/actors')}}/{{ $image->filename }}">
+                    </div>
+                @endif
+            @endforeach
+            <div class="card p-3">
+                <h4>{{ $actor->name }} movies</h4>
                 <ul>
                     @foreach ($actor->movies as $movie)
                     <li>
                         <a href="{{ route('movies.show', ['id' => $movie->id]) }}">
-                        {{ $movie->name }}
+                            {{ $movie->name }}
                         </a>
                     </li>
                     @endforeach
@@ -31,6 +43,6 @@
             </div>
         </div>
     </div>
-@endsection
-
+    @endsection
+    
 </div>

@@ -36,6 +36,7 @@
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>
             @endforeach
         @endif
+        
         <div class="form-group">
             <label for="category">Movies</label> 
             @foreach ($movies as $movie)
