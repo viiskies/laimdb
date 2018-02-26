@@ -9,6 +9,7 @@ use App\Category;
 use App\Movie;
 use App\Actor;
 use App\Image;
+use App\User;
 
 
 class MoviesController extends Controller
@@ -197,12 +198,23 @@ class MoviesController extends Controller
     
     public function upvote( $id ) {
         $movie = Movie::findOrFail( $id );
+        $user_id = Auth::user()->id;
+        foreach ($movie->votes as $vote){
+            echo $vote->pivot->user_id;
+        }
+
+        // $movie->votes()
+        dd($movie->votes()->pivot->latest());
+        dd('done');
+        $movie->votes()->attach($user_id, ['vote' => 1]);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
         return redirect()->action('MoviesController@index');
     }
     
     public function downvote( $id ) {
         $movie = Movie::findOrFail( $id );
+        $user_id = Auth::user()->id;
+        $movie->votes()->attach($user_id, ['vote' => -1]);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating - 1]);
         return redirect()->action('MoviesController@index');
     }

@@ -21,6 +21,10 @@ class Movie extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+    
+    public function votes() {
+        return $this->belongsToMany(User::class)->withPivot('vote')->withTimestamps();
+    }
 
     public function images() {
         return $this->morphMany(Image::class, 'imagable');
