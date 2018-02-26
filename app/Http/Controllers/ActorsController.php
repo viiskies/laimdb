@@ -50,7 +50,6 @@ class ActorsController extends Controller
         $path = $file->storePublicly('public/photos/actors/');
         $filename = basename($path);
 
-
         $actor->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => 0]);
 
         $movies_attached = $request->movie_id;

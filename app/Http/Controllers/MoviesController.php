@@ -130,6 +130,7 @@ class MoviesController extends Controller
         }
         $movie = Movie::findOrFail( $id );
         $user_id = Auth::user()->id;
+
         if (!empty($request->get('photo_id'))) {
             $movieImages = $movie->images;
             foreach ($movieImages as $image) {
@@ -194,14 +195,14 @@ class MoviesController extends Controller
         return redirect()->action('MoviesController@index');
     }
     
-    public function upvote($id) {
-        $movie = Movie::findOrFail($id);
+    public function upvote( $id ) {
+        $movie = Movie::findOrFail( $id );
         Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
         return redirect()->action('MoviesController@index');
     }
     
-    public function downvote($id) {
-        $movie = Movie::findOrFail($id);
+    public function downvote( $id ) {
+        $movie = Movie::findOrFail( $id );
         Movie::findOrFail( $id )->update(['rating' => $movie->rating - 1]);
         return redirect()->action('MoviesController@index');
     }
