@@ -204,7 +204,7 @@ class MoviesController extends Controller
         }
 
         // $movie->votes()
-        dd($movie->votes()->pivot->latest());
+        dd($movie->votes()->latest());
         dd('done');
         $movie->votes()->attach($user_id, ['vote' => 1]);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
