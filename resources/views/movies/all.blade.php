@@ -1,5 +1,9 @@
 @extends('layouts.app') 
 
+@section('javascript')
+    <script type="text/javascript" src="{{ URL::asset('js/voteUpdate.js') }}"></script>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col">
@@ -27,7 +31,7 @@
                         <a href="{{ route('movies.upvote', ['id' => $movie->id]) }}">
                             <span class="badge badge-pill badge-success">UP</span>
                         </a>
-                        <h3 class="mx-2">{{$movie->rating}}</h3>
+                        <h3 class="mx-2 vote">{{$movie->rating}}</h3>
                         <a href="{{ route('movies.downvote', ['id' => $movie->id]) }}">
                             <span class="badge badge-pill badge-primary">DOWN</span>
                         </a>
