@@ -14,8 +14,8 @@ use App\User;
 
 class MoviesController extends Controller
 {
-
-
+    
+    
     /**
     * Display a listing of the resource.
     *
@@ -131,7 +131,7 @@ class MoviesController extends Controller
         }
         $movie = Movie::findOrFail( $id );
         $user_id = Auth::user()->id;
-
+        
         if (!empty($request->get('photo_id'))) {
             $movieImages = $movie->images;
             foreach ($movieImages as $image) {
@@ -161,7 +161,7 @@ class MoviesController extends Controller
         }
         
         Movie::findOrFail( $id )->update(
-            ['name' => $request->get('name'), 
+            [      'name' => $request->get('name'), 
             'category_id' => $request->get('category_id'), 
             'description' => $request->get('description'), 
             'year' => $request->get('year'),
@@ -198,15 +198,12 @@ class MoviesController extends Controller
     
     public function upvote( $id ) {
         $movie = Movie::findOrFail( $id );
-        $user_id = Auth::user()->id;
-        foreach ($movie->votes as $vote){
-            echo $vote->pivot->user_id;
-        }
+        $user_id = Auth::user()->id;    
+        
+        $voted = $movie->votes()->where('user_id', $user_id)->first();
+        dd($voted);
 
-        // $movie->votes()
-        dd($movie->votes()->latest());
-        dd('done');
-        $movie->votes()->attach($user_id, ['vote' => 1]);
+        $movie->votes()->attach($user_id, ['vote' => true]);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
         return redirect()->action('MoviesController@index');
     }
@@ -214,7 +211,7 @@ class MoviesController extends Controller
     public function downvote( $id ) {
         $movie = Movie::findOrFail( $id );
         $user_id = Auth::user()->id;
-        $movie->votes()->attach($user_id, ['vote' => -1]);
+        // $movie->votes()->attach($user_id, ['vote' => false]);
         Movie::findOrFail( $id )->update(['rating' => $movie->rating - 1]);
         return redirect()->action('MoviesController@index');
     }
