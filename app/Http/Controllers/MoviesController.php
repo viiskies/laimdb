@@ -191,6 +191,7 @@ class MoviesController extends Controller
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
+        $movieToDelete->votes()->detach($user_id);
         $movieToDelete->actors()->detach();
         $deletedMovie = Movie::destroy( $id );
         return redirect()->action('MoviesController@index');
@@ -203,11 +204,12 @@ class MoviesController extends Controller
         $voted = $movie->votes()->where('user_id', $user_id)->exists();
         if ($voted) {
             $vote = $movie->votes()->where('user_id', $user_id)->first()->pivot->vote;
+            $movie->votes()->detach($user_id);               
             if ($vote == true) {
-                $delta = 0;
+                $delta = -1;
             } else {
-                $movie->votes()->detach($user_id);
-                $delta = -1;            
+                $delta = 2;
+                $movie->votes()->attach($user_id, ['vote' => true]);                         
             }
         } else {
             $movie->votes()->attach($user_id, ['vote' => true]);
@@ -225,11 +227,12 @@ class MoviesController extends Controller
         $voted = $movie->votes()->where('user_id', $user_id)->exists();
         if ($voted) {
             $vote = $movie->votes()->where('user_id', $user_id)->first()->pivot->vote;
+            $movie->votes()->detach($user_id);
             if ($vote == false) {
-                $delta = 0;
+                $delta = -1;
             } else {
-                $movie->votes()->detach($user_id);
-                $delta = -1;            
+                $movie->votes()->attach($user_id, ['vote' => false]);
+                $delta = 2;            
             }
         } else {
             $movie->votes()->attach($user_id, ['vote' => false]);

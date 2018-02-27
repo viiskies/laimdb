@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col">
         <div class="card-columns">
-            @for($i=0; $i<3; $i++)
+            @for($i=0; $i<5; $i++)
             @foreach($movies as $movie)
             <div class="card">
                 @foreach ($movie->images as $image)
@@ -34,14 +34,14 @@
                     </li>
                     @if($movie->actors->count() > 0)
                     <li class="list-group-item text-center">
-                            <p><h3>Actors</h3></p>
-                            @foreach ($movie->actors as $actor)
-                            <p class="mb-0">
-                                <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
-                                    {{ $actor->name }}
-                                </a>
-                            </p>
-                            @endforeach
+                        <p><h3>Actors</h3></p>
+                        @foreach ($movie->actors as $actor)
+                        <p class="mb-0">
+                            <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
+                                {{ $actor->name }}
+                            </a>
+                        </p>
+                        @endforeach
                     </li>   
                     @endif
                 </ul>
