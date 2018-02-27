@@ -45,3 +45,6 @@ Route::get('/api', 'MoviesController@api')->name('movies.api');
 
 Route::get('/actors', 'ActorsController@index')->name('actors.all');
 Route::get('/actor/{id}', 'ActorsController@show')->name('actors.show');
+
+Route::get('/fb/login','FacebookController@redirect')->name('facebook.redirect');
+Route::get('/fb/callback','FacebookController@callback')->name('facebook.callback');
