@@ -200,19 +200,43 @@ class MoviesController extends Controller
         $movie = Movie::findOrFail( $id );
         $user_id = Auth::user()->id;    
         
-        $voted = $movie->votes()->where('user_id', $user_id)->first();
-        dd($voted);
-
-        $movie->votes()->attach($user_id, ['vote' => true]);
-        Movie::findOrFail( $id )->update(['rating' => $movie->rating + 1]);
+        $voted = $movie->votes()->where('user_id', $user_id)->exists();
+        if ($voted) {
+            $vote = $movie->votes()->where('user_id', $user_id)->first()->pivot->vote;
+            if ($vote == true) {
+                $delta = 0;
+            } else {
+                $movie->votes()->detach($user_id);
+                $delta = -1;            
+            }
+        } else {
+            $movie->votes()->attach($user_id, ['vote' => true]);
+            $delta = 1;
+        }
+        
+        Movie::findOrFail( $id )->update(['rating' => ($movie->rating + $delta)]);
         return redirect()->action('MoviesController@index');
     }
     
     public function downvote( $id ) {
         $movie = Movie::findOrFail( $id );
         $user_id = Auth::user()->id;
-        // $movie->votes()->attach($user_id, ['vote' => false]);
-        Movie::findOrFail( $id )->update(['rating' => $movie->rating - 1]);
+        
+        $voted = $movie->votes()->where('user_id', $user_id)->exists();
+        if ($voted) {
+            $vote = $movie->votes()->where('user_id', $user_id)->first()->pivot->vote;
+            if ($vote == false) {
+                $delta = 0;
+            } else {
+                $movie->votes()->detach($user_id);
+                $delta = -1;            
+            }
+        } else {
+            $movie->votes()->attach($user_id, ['vote' => false]);
+            $delta = 1;
+        }
+        
+        Movie::findOrFail( $id )->update(['rating' => ($movie->rating - $delta)]);
         return redirect()->action('MoviesController@index');
     }
 }

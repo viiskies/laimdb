@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->hasMany( Actor::class );
     }
     
+    public function votes() {
+        return $this->belongsToMany(Movie::class)->withPivot('vote')->withTimestamps();
+    }
+    
     /**
     * @param string|array $roles
     */
