@@ -37,8 +37,9 @@ class MoviesController extends Controller
             foreach($json['results'] as $movie) {
                 $actors_url = 'https://api.themoviedb.org/3/movie/' . $movie['id'] . '/credits?api_key=1e2dcbc9bfec809dc5b5af87fba9f171&page=' . $page;
                 $actors_json = json_decode(file_get_contents($actors_url), true);
-                foreach($actors_json['cast'] as $movie) {
-
+                foreach($actors_json['cast'] as $actor) {
+                    $actor_name = $actor['name'];
+                    $actor_profile_path = $actor['profile_path'];
                 }
                 dd('done');
                 $file = file_get_contents('http://image.tmdb.org/t/p/w300' . $movie['poster_path']);
