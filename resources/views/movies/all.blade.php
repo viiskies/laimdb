@@ -1,20 +1,23 @@
 @extends('layouts.app') 
 
 @section('javascript')
-    <script type="text/javascript" src="{{ URL::asset('js/voteUpdate.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/voteUpdate.js') }}"></script>
 @endsection
 
 @section('content')
 <div class="row">
     <div class="col">
+        <div class="d-flex justify-content-center mt-3">
+            {{$movies->links()}}
+        </div>
+        
         <div class="card-columns">
-            @for($i=0; $i<5; $i++)
             @foreach($movies as $movie)
             <div class="card">
                 @foreach ($movie->images as $image)
-                    @if($image->featured)
-                        <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-fluid card-img-top">
-                    @endif
+                @if($image->featured)
+                    <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-fluid card-img-top">
+                @endif
                 @endforeach
                 <div class="card-body">
                     <h5 class="card-title">
@@ -51,8 +54,7 @@
                 </ul>
             </div>
             @endforeach
-            @endfor
         </div>
     </div>
-@endsection
+    @endsection
 </div>

@@ -23,27 +23,40 @@ class MoviesController extends Controller
     */
     public function index()
     {
-        $movies = Movie::orderBy('name', 'asc')->get();
+        $movies = Movie::orderBy('name', 'asc')->paginate(20);
         return view('movies.all', ['movies' => $movies]);
     }
     
     public function api(Request $request)
     {
-        $movie = Movie::findOrFail( 1 );
-        $url = "http://www.omdbapi.com/?apikey=cbeafd6a&s=love&y=2016";
-        $json = json_decode(file_get_contents($url), true);
-        foreach($json['Search'] as $movie) {
-            // echo $movie['Title'];
-            $file = file_get_contents($movie['Poster']);
-            
-            Storage::disk('local')->put('public/photos/movies/fun1.jpg', $file);
-            dd('done');
-            $path = $file->storePublicly('public/photos/movies');
-            $filename = basename($path);
-            $movie->images()->create(['filename' => $filename, 'user_id' => 1]);
+        $page = 21;
+        for ($page; $page < 22; $page++){
+            $url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=1e2dcbc9bfec809dc5b5af87fba9f171&page=' . $page;
+            $json = json_decode(file_get_contents($url), true);
+                        
+            foreach($json['results'] as $movie) {
+                $actors_url = 'https://api.themoviedb.org/3/movie/' . $movie['id'] . '/credits?api_key=1e2dcbc9bfec809dc5b5af87fba9f171&page=' . $page;
+                $actors_json = json_decode(file_get_contents($actors_url), true);
+                foreach($actors_json['cast'] as $movie) {
+
+                }
+                dd('done');
+                $file = file_get_contents('http://image.tmdb.org/t/p/w300' . $movie['poster_path']);
+                $ext = pathinfo($movie['poster_path'], PATHINFO_EXTENSION);
+                $filename = md5($file);
+                Storage::disk('local')->put('public/photos/movies/' . $filename . '.' . $ext, $file);
+                $movieCreate = Movie::create( [
+                    'name' => $movie['title'], 
+                    'category_id' => $movie['genre_ids'][0] = $movie['genre_ids'][0] ?: 7,
+                    'user_id' => 1, 
+                    'description' => $movie['overview'], 
+                    'year' => substr($movie['release_date'], 0, 4),
+                    'rating' => 1] );
+                    $movieCreate->images()->create(['filename' => $filename . '.' . $ext, 'user_id' => 1, 'featured' => 1]
+                );
+            };
         };
-        $movies = Movie::orderBy('name', 'asc')->get();
-        return view('movies.all', ['movies' => $movies]);
+        return redirect()->action('MoviesController@index');
     }
     
     /**
@@ -191,7 +204,7 @@ class MoviesController extends Controller
             Storage::delete($fullFileName);
             $image->delete($image->id);
         }
-        $movieToDelete->votes()->detach($user_id);
+        $movieToDelete->votes()->detach();
         $movieToDelete->actors()->detach();
         $deletedMovie = Movie::destroy( $id );
         return redirect()->action('MoviesController@index');
