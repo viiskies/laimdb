@@ -11,7 +11,7 @@
             {{$movies->links()}}
         </div>
         
-        <div class="card-columns">
+        <div class="card-columns movies">
             @foreach($movies as $movie)
             <div class="card">
                 @foreach ($movie->images as $image)
