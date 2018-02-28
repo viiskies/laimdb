@@ -3,6 +3,9 @@
 @section('content')
 <div class="row">
     <div class="col">
+        <div class="d-flex justify-content-center mt-3">
+            {{ $actors->links() }}
+        </div>
         <div class="card-columns">
             @foreach($actors as $actor)
             <div class="card">

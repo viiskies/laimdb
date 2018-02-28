@@ -20,7 +20,7 @@ class ActorsController extends Controller
      */
     public function index()
     {
-        $actors = Actor::orderBy('name', 'asc')->get();
+        $actors = Actor::orderBy('name', 'asc')->paginate(20);
         return view('actors.all', ['actors' => $actors]);
     }
 

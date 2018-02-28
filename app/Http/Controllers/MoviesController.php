@@ -29,19 +29,45 @@ class MoviesController extends Controller
     
     public function api(Request $request)
     {
-        $page = 21;
-        for ($page; $page < 22; $page++){
+        $page = 1;
+        for ($page; $page < 5 ; $page++){
             $url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=1e2dcbc9bfec809dc5b5af87fba9f171&page=' . $page;
             $json = json_decode(file_get_contents($url), true);
                         
             foreach($json['results'] as $movie) {
-                $actors_url = 'https://api.themoviedb.org/3/movie/' . $movie['id'] . '/credits?api_key=1e2dcbc9bfec809dc5b5af87fba9f171&page=' . $page;
+                $actors_url = 'https://api.themoviedb.org/3/movie/' . $movie['id'] . '/credits?api_key=1e2dcbc9bfec809dc5b5af87fba9f171';
                 $actors_json = json_decode(file_get_contents($actors_url), true);
-                foreach($actors_json['cast'] as $actor) {
+                
+                for ($i = 0; $i < 3; $i++) {
+                    if(!isset($actors_json['cast'][$i])) {
+                        break;
+                    }
+                    $actor = $actors_json['cast'][$i];
+                    $person_url = 'https://api.themoviedb.org/3/person/' . $actor['id'] . '?api_key=1e2dcbc9bfec809dc5b5af87fba9f171';
+                    $person_json = json_decode(file_get_contents($person_url), true);        
+
                     $actor_name = $actor['name'];
-                    $actor_profile_path = $actor['profile_path'];
+                    $actor_profile_path = isset($actor['profile_path']) ? $actor['profile_path'] : '';
+                    $person_birthday = isset($person_json['birthday']) ? $person_json['birthday'] : '2000-01-01';
+                    $person_deathday = isset($person_json['deathday']) ? $person_json['deathday'] : null;
+                    
+                    $actor = Actor::create( [
+                        'name' => $actor_name, 
+                        'birthday' => $person_birthday, 
+                        'deathday' => $person_deathday,
+                        'user_id' => 1 ] 
+                    );
+
+                    if ($actor_profile_path != '') {
+                        $file = file_get_contents('http://image.tmdb.org/t/p/w300' . $actor_profile_path);
+                        $ext = pathinfo($actor_profile_path, PATHINFO_EXTENSION);
+                        $filename = md5($file);
+                        Storage::disk('local')->put('public/photos/actors/' . $filename . '.' . $ext, $file);
+                        $actor->images()->create(['filename' => $filename . '.' . $ext, 'user_id' => 1, 'featured' => 1]);
+                    }
+                    
                 }
-                dd('done');
+                
                 $file = file_get_contents('http://image.tmdb.org/t/p/w300' . $movie['poster_path']);
                 $ext = pathinfo($movie['poster_path'], PATHINFO_EXTENSION);
                 $filename = md5($file);
