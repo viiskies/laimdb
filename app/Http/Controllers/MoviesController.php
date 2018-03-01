@@ -150,8 +150,8 @@ class MoviesController extends Controller
             [      'name' => $request->get('name'), 
             'category_id' => $request->get('category_id'), 
             'description' => $request->get('description'), 
-            'year' => $request->get('year'),
-            'rating' => $request->get('rating')]
+                   'year' => $request->get('year'),
+                 'rating' => $request->get('rating')]
         );
         
         $actors_attached = $request->actor_id;
@@ -233,5 +233,7 @@ class MoviesController extends Controller
         $movies = Movie::search($query)->paginate(20);
         $movies->searchable();
         return view('movies.search', ['movies' => $movies]);
+        
+        // https://www.jmkleger.com/post/ajax-crud-for-laravel-5-4
     }
 }

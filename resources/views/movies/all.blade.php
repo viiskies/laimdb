@@ -1,9 +1,5 @@
 @extends('layouts.app') 
 
-@section('javascript')
-<script type="text/javascript" src="{{ URL::asset('js/voteUpdate.js') }}"></script>
-@endsection
-
 @section('content')
 <div class="row">
     <div class="col">
@@ -16,8 +12,8 @@
             <div class="card">
                 @foreach ($movie->images as $image)
                 @if($image->featured)
-                    <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-fluid card-img-top">
-                @endif
+                        <img src="{{URL::to('/storage/photos/movies')}}/{{ $image->filename }}" class="img-fluid card-img-top">
+                        @endif
                 @endforeach
                 <div class="card-body">
                     <h5 class="card-title">
@@ -36,13 +32,13 @@
                         </a>
                         <h3 class="mx-2 vote">{{$movie->rating}}</h3>
                         <a href="{{ route('movies.downvote', ['id' => $movie->id]) }}">
-                            <span class="badge badge-pill badge-primary">DOWN</span>
-                        </a>
-                    </li>
-                    @if($movie->actors->count() > 0)
-                    <li class="list-group-item text-center">
-                        <p><h3>Actors</h3></p>
-                        @foreach ($movie->actors as $actor)
+                                <span class="badge badge-pill badge-primary">DOWN</span>
+                            </a>
+                        </li>
+                        @if($movie->actors->count() > 0)
+                        <li class="list-group-item text-center">
+                            <p><h3>Actors</h3></p>
+                            @foreach ($movie->actors as $actor)
                         <p class="mb-0">
                             <a href="{{ route('actors.show', ['id' => $actor->id]) }}">
                                 {{ $actor->name }}
@@ -58,3 +54,9 @@
     </div>
     @endsection
 </div>
+    
+@section('javascript')
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/voteUpdate.js') }}"></script>
+@endsection
