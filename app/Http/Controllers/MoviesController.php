@@ -228,4 +228,10 @@ class MoviesController extends Controller
         Movie::findOrFail( $id )->update(['rating' => ($movie->rating - $delta)]);
         return redirect()->action('MoviesController@index');
     }
+
+    public function search($query) {
+        $movies = Movie::search($query)->paginate(20);
+        $movies->searchable();
+        return view('movies.search', ['movies' => $movies]);
+    }
 }

@@ -41,6 +41,8 @@ Route::get('/movies', 'MoviesController@index')->name('movies.all');
 Route::get('/movie/{id}', 'MoviesController@show')->name('movies.show');
 Route::get('/movie/upvote/{id}', 'MoviesController@upvote')->name('movies.upvote');
 Route::get('/movie/downvote/{id}', 'MoviesController@downvote')->name('movies.downvote');
+Route::get('/movie/search/{query}', 'MoviesController@search')->name('movies.search');
+
 Route::get('/api', 'MoviesController@api')->name('movies.api');
 
 Route::get('/actors', 'ActorsController@index')->name('actors.all');
