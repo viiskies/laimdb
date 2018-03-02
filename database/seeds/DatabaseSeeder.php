@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $page = 100;
+        $page = 1;
         $this->command->getOutput()->progressStart(200);
-        for ($page; $page < 101 ; $page++){
+        for ($page; $page <= 10 ; $page++){
             $url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=1e2dcbc9bfec809dc5b5af87fba9f171&page=' . $page;
             $json = json_decode(file_get_contents($url), true);
                         
