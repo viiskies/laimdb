@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Category;
 
 class CategoriesSeeder extends Seeder
 {
@@ -11,14 +12,11 @@ class CategoriesSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
+        $url = 'https://api.themoviedb.org/3/genre/movie/list?api_key=1e2dcbc9bfec809dc5b5af87fba9f171';
+        $json = json_decode(file_get_contents($url), true);
 
-        for ($i=0; $i < 10; $i++) { 
-            DB::table('categories')->insert([
-                'name' => $faker->streetName,
-                'description' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-                'user_id' => $i,
-            ]);
+        foreach($json['genres'] as $genre) {
+            $category = Category::create( [ 'user_id' => 1, 'name' => $genre['name'], 'description' => 'blank', 'id' => $genre['id'] ] );
         }
     }
 }
