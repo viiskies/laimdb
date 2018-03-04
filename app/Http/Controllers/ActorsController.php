@@ -15,7 +15,7 @@ class ActorsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * etst
      * @return \Illuminate\Http\Response
      */
     public function index()
