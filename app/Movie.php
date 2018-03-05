@@ -2,12 +2,10 @@
 
 namespace App;
 
-use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
-    use Searchable;
 
     protected $fillable = [
         'name', 'category_id', 'user_id', 'description', 'year', 'rating'

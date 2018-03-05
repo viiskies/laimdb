@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class Actor extends Model
 {
-    use Searchable;
     
     protected $fillable = [
         'name', 'birthday', 'deathday', 'user_id', 'api_id'
