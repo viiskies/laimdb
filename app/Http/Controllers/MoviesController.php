@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,15 +25,10 @@ class MoviesController extends Controller
     */
     public function index()
     {
-        $movies = Movie::orderBy('rating', 'desc')->orderBy('name', 'asc')->paginate(20);
+        $movies = Movie::orderBy('rating', 'desc')->orderBy('name', 'asc')->paginate(config('pagination.per_page'));
         return view('movies.all', ['movies' => $movies]);
     }
-    
-    public function api(Request $request)
-    {
-        return redirect()->action('MoviesController@index');
-    }
-    
+
     /**
     * Show the form for creating a new resource.
     *
@@ -53,24 +50,27 @@ class MoviesController extends Controller
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
-    public function store(Request $request)
+    public function store(StoreMovieRequest $request)
     {
         if (Auth::check()) {
             $request->user()->authorizeRoles('user');
         }
         $user_id = Auth::user()->id;
-        $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id ] );
-        
-        foreach ($request->file('photo') as $file) {
-            $path = $file->storePublicly('public/photos/movies');
-            $filename = basename($path);
+        $movie = Movie::create( $request->except('_token') + [ 'user_id' => $user_id, 'rating' => 1] );
+
+        if ($request->has('photo')) {
             $featured = 1;
-            $movie->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => $featured]);
-            $featured = 0;
+            foreach ($request->file('photo') as $file) {
+                $path = $file->storePublicly('public/photos/movies');
+                $filename = basename($path);
+                $movie->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => $featured]);
+                $featured = 0;
+            }
         }
         $actors_attached = $request->actor_id;
         $movie->actors()->attach($actors_attached);
-        
+
+
         return redirect()->action('MoviesController@index');
     }
     
@@ -110,7 +110,7 @@ class MoviesController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function update(Request $request, $id)
+    public function update(UpdateMovieRequest $request, $id)
     {
         if (Auth::check()) {
             $request->user()->authorizeRoles('user');
@@ -147,11 +147,12 @@ class MoviesController extends Controller
         }
         
         Movie::findOrFail( $id )->update(
-            [      'name' => $request->get('name'), 
-            'category_id' => $request->get('category_id'), 
-            'description' => $request->get('description'), 
-                   'year' => $request->get('year'),
-                 'rating' => $request->get('rating')]
+            [
+                'name' => $request->get('name'),
+                'category_id' => $request->get('category_id'),
+                'description' => $request->get('description'),
+                'year' => $request->get('year')
+            ]
         );
         
         $actors_attached = $request->actor_id;
@@ -227,7 +228,6 @@ class MoviesController extends Controller
         
         Movie::findOrFail( $id )->update(['rating' => ($movie->rating - $delta)]);
         return redirect()->action('MoviesController@index');
-        // https://www.jmkleger.com/post/ajax-crud-for-laravel-5-4
     }
 
 }

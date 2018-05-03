@@ -22,7 +22,6 @@ class CreateMoviesTable extends Migration
             $table->text('description');
             $table->integer('year');
             $table->double('rating');
-
         });
     }
 

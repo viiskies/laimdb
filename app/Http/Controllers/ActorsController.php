@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreActorRequest;
+use App\Http\Requests\UpdateActorRequest;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Facades\Auth;
 use App\Movie;
 use App\Actor;
 use App\Image;
 
-
 class ActorsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * etst
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $actors = Actor::orderBy('name', 'asc')->paginate(23);
+        $actors = Actor::orderBy('name', 'asc')->paginate(config('pagination.per_page'));
         return view('actors.all', ['actors' => $actors]);
     }
 
@@ -41,16 +40,21 @@ class ActorsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreActorRequest $request)
     {
         $user_id = Auth::user()->id;
         $actor = Actor::create( $request->except('_token') + [ 'user_id' => $user_id ] );
 
-        $file = $request->file('photo');
-        $path = $file->storePublicly('public/photos/actors/');
-        $filename = basename($path);
+        $featured = 1;
+        if ($request->has('photo')) {
+            foreach ($request->file('photo') as $file) {
+                $path = $file->storePublicly('public/photos/actors/');
+                $filename = basename($path);
 
-        $actor->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => 0]);
+                $actor->images()->create(['filename' => $filename, 'user_id' => $user_id, 'featured' => $featured]);
+                $featured = 0;
+            }
+        }
 
         $movies_attached = $request->movie_id;
         $actor->movies()->attach($movies_attached);
@@ -90,7 +94,7 @@ class ActorsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateActorRequest $request, $id)
     {
         $actor = Actor::findOrFail( $id );
         $user_id = Auth::user()->id;

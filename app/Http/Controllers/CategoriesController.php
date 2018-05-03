@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
 
+use App\Http\Requests\StoreCategoryRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Category;
-use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
@@ -35,7 +35,7 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
         $user_id = Auth::user()->id;
         $category = Category::create( $request->except('_token') + [ 'user_id' => $user_id ] );
@@ -73,7 +73,7 @@ class CategoriesController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreCategoryRequest $request, $id)
     {
         $category = Category::findOrFail( $id )->update(
             ['name' => $request->get('name'), 'description' => $request->get('description')]

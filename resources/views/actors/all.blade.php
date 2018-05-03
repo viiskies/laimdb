@@ -26,18 +26,18 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     @if($actor->movies->count() > 0)
-                    <li class="list-group-item text-center">
-                        <p>
-                            <h3>Movies</h3>
-                        </p>
-                        @foreach ($actor->movies as $movie)
-                        <p class="mb-0">
-                            <a href="{{ route('movies.show', ['id' => $movie->id]) }}">
-                                {{ $movie->name }}
-                             </a>
-                        </p>
-                        @endforeach
-                    </li>
+                        <li class="list-group-item text-center">
+                            <p>
+                                <h3>Movies</h3>
+                            </p>
+                            @foreach ($actor->movies as $movie)
+                                <p class="mb-0">
+                                    <a href="{{ route('movies.show', ['id' => $movie->id]) }}">
+                                        {{ $movie->name }}
+                                     </a>
+                                </p>
+                            @endforeach
+                        </li>
                     @endif
                 </ul>
             </div>

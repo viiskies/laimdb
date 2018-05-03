@@ -11,7 +11,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div id="app">
@@ -27,9 +29,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li><a class="nav-link" href="{{ route('movies.all') }}">Movies</a></li>
-                        <li><a class="nav-link" href="{{ route('actors.all') }}">Actors</a></li>
-                        <li><a class="nav-link" href="{{ route('categories.all') }}">Categories</a></li>
+                        <li><a class="nav-link" href="{{ route('movies.index') }}">Movies</a></li>
+                        <li><a class="nav-link" href="{{ route('actors.index') }}">Actors</a></li>
+                        <li><a class="nav-link" href="{{ route('categories.index') }}">Categories</a></li>
                         @if (Auth::check())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

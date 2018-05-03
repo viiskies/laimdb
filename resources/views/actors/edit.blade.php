@@ -3,8 +3,10 @@
 @section('content')
 <div class="col-xl-6">
     <form method="post" action="{{ route('actors.update', [ 'actor' => $actor->id ]) }}" enctype="multipart/form-data">
-        
         @csrf
+        @method('PUT')
+        @include('shared.errors')
+
         <input type="file" name="photo[]" id="photo" multiple>
         <div class="form-group">
             <div class="form-check">
@@ -24,46 +26,28 @@
         </div>
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $actor->name }}">
+            <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ old('name', $actor->name) }}">
         </div>
-        @if ($errors->get('name'))
-            @foreach ($errors->get('name') as $error)
-                <div class="alert alert-danger" role="alert">{{ $error }}</div>
-            @endforeach
-        @endif
-        
+
         <div class="form-group">
             <label for="birthday">Birthday</label>
-            <input type="date" name="birthday" class="form-control" id="birthday" value="{{ $actor->birthday }}"></input>
+            <input type="date" name="birthday" class="form-control" id="birthday" value="{{ old('birthday', $actor->birthday) }}">
         </div>
-        @if ($errors->get('birthday')) 
-            @foreach ($errors->get('birthday') as $error)
-                <div class="alert alert-danger" role="alert">{{ $error }}</div>
-            @endforeach
-        @endif
         
         <div class="form-group">
             <label for="deathday">Date of death</label>
-            <input type="date" name="deathday" class="form-control" id="deathday" value="{{ $actor->deathday }}"></input>                                    
+            <input type="date" name="deathday" class="form-control" id="deathday" value="{{ old('deathday', $actor->deathday) }}">
         </div>
-        @if ($errors->get('deathday')) 
-            @foreach ($errors->get('deathday') as $error)
-                <div class="alert alert-danger" role="alert">{{ $error }}</div>
-            @endforeach
-        @endif
-        
+
         <div class="form-group">
-            <label for="category">Movies</label> 
-            @foreach ($movies as $movie)
-            <div class="form-check">
-                @if ($actor->movies->contains($movie))
-                    <input class="form-check-input" name="movie_id[]" type="checkbox" value="{{ $movie->id }}" id="{{ $movie->name }}" checked>       
-                @else
-                    <input class="form-check-input" name="movie_id[]" type="checkbox" value="{{ $movie->id }}" id="{{ $movie->name }}">       
-                @endif
-                <label class="form-check-label" for="{{ $movie->name }}">{{ $movie->name }}</label>
-            </div>
-            @endforeach
+            <label for="movies">Movies</label><br>
+            <select class="js-example-basic-multiple" name="movie_id[]" multiple="multiple" id="movies">
+                @foreach ($movies as $movie)
+                    <option value="{{ $movie->id }}"
+                            {{ (collect(old('movie_id'))->contains($movie->id)) || $actor->movies->contains('id', $movie->id) ? 'selected':'' }}>{{ $movie->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         
         <button type="submit" class="btn btn-secondary">Submit</button>
