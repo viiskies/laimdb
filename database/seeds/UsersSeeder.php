@@ -11,15 +11,11 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-
-        for ($i=0; $i < 10; $i++) { 
-            DB::table('users')->insert([
-                'name' => $faker->name(),
-                'email' => $faker->email,
-                'role' => 'registered',
-                'password' => bcrypt('registered')
-            ]);
-        }
+        DB::table('users')->insert([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('adminas'),
+            'role' => 'admin',
+        ]);
     }
 }

@@ -36,3 +36,11 @@
   height: 20vw;
   object-fit: cover;
 }
+
+ul.pagination li:nth-child(n+3):nth-last-child(n+3) {
+  display: none;
+}
+
+ul.pagination li.active, ul.pagination li.active + li, ul.pagination li.disabled {
+  display: block !important;
+}
